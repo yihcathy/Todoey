@@ -20,22 +20,19 @@ class TodoListViewController: UITableViewController {
         
         print(dataFilePath!)
                 
-        let newItem = Item()
-        newItem.title = "Eat breakfast"
-        itemArray.append(newItem)
+//        let newItem = Item()
+//        newItem.title = "Eat breakfast"
+//        itemArray.append(newItem)
+//
+//        let newItem2 = Item()
+//        newItem2.title = "Go to gym"
+//        itemArray.append(newItem2)
+//
+//        let newItem3 = Item()
+//        newItem3.title = "Feed cat"
+//        itemArray.append(newItem3)
         
-        let newItem2 = Item()
-        newItem2.title = "Go to gym"
-        itemArray.append(newItem2)
-    
-        let newItem3 = Item()
-        newItem3.title = "Feed cat"
-        itemArray.append(newItem3)
-        
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
-//            itemArray = items
-//        }
+        loadItems()
     }
     
     //MARK - Tableview datasource mathods
@@ -109,6 +106,19 @@ class TodoListViewController: UITableViewController {
         
         self.tableView.reloadData()
         
+    }
+    
+    
+    func loadItems(){
+        
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch{
+                print("Error decoding item array, \(error)")
+            }
+        }
     }
 }
 
